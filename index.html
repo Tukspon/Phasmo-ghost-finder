@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>調査員ジャーナル | Phasmophobia ゴースト特定ツール</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,500&family=IBM+Plex+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app">
+
+  <header class="masthead">
+    <div class="masthead-mark">✎</div>
+    <div class="masthead-text">
+      <h1>調査員ジャーナル</h1>
+      <p>証拠・ハント正気度・移動速度からゴーストを絞り込む</p>
+    </div>
+    <div class="masthead-count">
+      <span id="matchCount">30</span>
+      <small>候補</small>
+    </div>
+  </header>
+
+  <main class="layout">
+
+    <!-- ===== 左: フィルター ===== -->
+    <section class="rail" aria-label="フィルター">
+
+      <div class="rail-block">
+        <h2>証拠</h2>
+        <p class="rail-hint">タップで 確定 → 除外 → 未選択 を切り替え</p>
+        <div class="evidence-grid" id="evidenceGrid"></div>
+      </div>
+
+      <div class="rail-block">
+        <h2>ハント時の正気度</h2>
+        <p class="rail-hint">基準は50%。ハントが起きた瞬間の体感で選ぶ</p>
+        <div class="band-grid" id="sanityGrid">
+          <button type="button" class="band-btn" data-band="low">
+            <strong>低い</strong><span>50%未満</span>
+          </button>
+          <button type="button" class="band-btn" data-band="normal">
+            <strong>普通</strong><span>50%前後</span>
+          </button>
+          <button type="button" class="band-btn" data-band="high">
+            <strong>高い</strong><span>50%超</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="rail-block">
+        <h2>足の速さ</h2>
+        <p class="rail-hint">基準は普通(1.7m/s)。ハント中の体感で選ぶ</p>
+        <div class="band-grid band-grid-4" id="speedGrid">
+          <button type="button" class="band-btn" data-band="slow">
+            <strong>遅い</strong><span>〜1.4m/s</span>
+          </button>
+          <button type="button" class="band-btn" data-band="normal">
+            <strong>普通</strong><span>1.5〜1.9m/s</span>
+          </button>
+          <button type="button" class="band-btn" data-band="fast">
+            <strong>速い</strong><span>2.0〜2.7m/s</span>
+          </button>
+          <button type="button" class="band-btn" data-band="veryfast">
+            <strong>非常に速い</strong><span>2.8m/s〜</span>
+          </button>
+        </div>
+      </div>
+
+      <button class="reset-btn" id="resetBtn" type="button">条件をリセット</button>
+    </section>
+
+    <!-- ===== 右: 結果 ===== -->
+    <section class="journal" aria-label="結果">
+      <div class="journal-page" id="results"></div>
+    </section>
+
+  </main>
+
+  <footer class="app-footer">
+    <p>データはWiki・公式ジャーナル情報を基にした目安です。ゲーム内ジャーナルを優先してください。 · <code>data/ghosts.json</code> を編集すればアプデに追従できます。</p>
+  </footer>
+
+</div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

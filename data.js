@@ -1,0 +1,487 @@
+// ゴーストデータ本体（fetchを使わずscriptタグで直接読み込むことで
+// file://で開いた場合やホスティング環境差によるCORSエラーを回避しています。
+const GHOST_DATA = {
+  "_readme": "証拠キー: emf5, spiritbox, uv, orbs, writing, freezing, dots。数値はWikiや配信当時のジャーナル記載を基にした目安です。アプデで変わることがあるので、対戦中は必ずゲーム内ジャーナルを優先してください。",
+  "evidenceTypes": [
+    {
+      "key": "emf5",
+      "ja": "EMFレベル5"
+    },
+    {
+      "key": "spiritbox",
+      "ja": "スピリットボックス"
+    },
+    {
+      "key": "uv",
+      "ja": "紫外線 (UV)"
+    },
+    {
+      "key": "orbs",
+      "ja": "ゴーストオーブ"
+    },
+    {
+      "key": "writing",
+      "ja": "ゴーストライティング"
+    },
+    {
+      "key": "freezing",
+      "ja": "氷点下の温度"
+    },
+    {
+      "key": "dots",
+      "ja": "D.O.T.S.プロジェクター"
+    }
+  ],
+  "ghosts": [
+    {
+      "id": "spirit",
+      "ja": "スピリット",
+      "en": "Spirit",
+      "evidence": [
+        "emf5",
+        "spiritbox",
+        "writing"
+      ],
+      "huntSanity": 50,
+      "sanityNote": "",
+      "speedMin": 1.7,
+      "speedMax": 1.7,
+      "tips": "線香で一定時間ハントを封じられる。特に強い特殊挙動はない標準的なゴースト。"
+    },
+    {
+      "id": "wraith",
+      "ja": "レイス",
+      "en": "Wraith",
+      "evidence": [
+        "emf5",
+        "dots",
+        "writing"
+      ],
+      "huntSanity": 50,
+      "sanityNote": "",
+      "speedMin": 1.7,
+      "speedMax": 1.7,
+      "tips": "足跡（塩）を残さず、塩の上を平気で歩く。床に触れず浮遊している。"
+    },
+    {
+      "id": "phantom",
+      "ja": "ファントム",
+      "en": "Phantom",
+      "evidence": [
+        "spiritbox",
+        "dots",
+        "orbs"
+      ],
+      "huntSanity": 50,
+      "sanityNote": "",
+      "speedMin": 1.7,
+      "speedMax": 1.7,
+      "tips": "写真を撮ると視界が一瞬霧に包まれる。長時間見つめると視界が乱れる。"
+    },
+    {
+      "id": "poltergeist",
+      "ja": "ポルターガイスト",
+      "en": "Poltergeist",
+      "evidence": [
+        "spiritbox",
+        "writing",
+        "orbs"
+      ],
+      "huntSanity": 50,
+      "sanityNote": "",
+      "speedMin": 1.7,
+      "speedMax": 1.7,
+      "tips": "周囲の物を一斉に投げ飛ばすイベントを起こす。物が多い部屋ほど活発。"
+    },
+    {
+      "id": "banshee",
+      "ja": "バンシー",
+      "en": "Banshee",
+      "evidence": [
+        "uv",
+        "dots",
+        "orbs"
+      ],
+      "huntSanity": 50,
+      "sanityNote": "標的にした1人の正気度でハント判定（全体平均ではない）",
+      "speedMin": 1.7,
+      "speedMax": 1.7,
+      "tips": "1人のプレイヤーだけを執拗に狙う。パラボラマイクで独特の悲鳴が聞こえることがある。"
+    },
+    {
+      "id": "jinn",
+      "ja": "ジン",
+      "en": "Jinn",
+      "evidence": [
+        "emf5",
+        "freezing",
+        "uv"
+      ],
+      "huntSanity": 50,
+      "sanityNote": "",
+      "speedMin": 1.7,
+      "speedMax": 2.5,
+      "tips": "ブレーカーがONで距離が離れているとLoS込みで2.5m/sまで加速。3m以内やブレーカーOFFなら通常速度。"
+    },
+    {
+      "id": "mare",
+      "ja": "メアー",
+      "en": "Mare",
+      "evidence": [
+        "spiritbox",
+        "orbs",
+        "writing"
+      ],
+      "huntSanity": 50,
+      "sanityNote": "暗い部屋ほどハント頻度が上がる（照明があると抑えられる）",
+      "speedMin": 1.7,
+      "speedMax": 1.7,
+      "tips": "電気をつけておくとハントしにくくなる。逆に真っ暗な部屋は危険。"
+    },
+    {
+      "id": "revenant",
+      "ja": "レヴナント",
+      "en": "Revenant",
+      "evidence": [
+        "emf5",
+        "orbs",
+        "writing"
+      ],
+      "huntSanity": 50,
+      "sanityNote": "",
+      "speedMin": 1.0,
+      "speedMax": 3.0,
+      "tips": "見つけていない時は1.0m/sとかなり遅いが、プレイヤーを感知した瞬間3.0m/sに跳ね上がる「カタツムリかジェットか」タイプ。"
+    },
+    {
+      "id": "shade",
+      "ja": "シェード",
+      "en": "Shade",
+      "evidence": [
+        "emf5",
+        "freezing",
+        "writing"
+      ],
+      "huntSanity": 35,
+      "sanityNote": "臆病で、近くにプレイヤーが複数いるとハントしにくい",
+      "speedMin": 1.7,
+      "speedMax": 1.7,
+      "tips": "ハント閾値が低め（35%目安）で、複数人で近くにいるとさらにハントしにくい。"
+    },
+    {
+      "id": "demon",
+      "ja": "デーモン",
+      "en": "Demon",
+      "evidence": [
+        "freezing",
+        "uv",
+        "writing"
+      ],
+      "huntSanity": 70,
+      "sanityNote": "正気度が高くてもハントしてくる。スマッジ後も1分でハント再開",
+      "speedMin": 1.7,
+      "speedMax": 1.7,
+      "tips": "ハント閾値が高く(70%目安)、正気度に関係なく突然ハントを仕掛けてくる危険なゴースト。"
+    },
+    {
+      "id": "yurei",
+      "ja": "幽霊",
+      "en": "Yurei",
+      "evidence": [
+        "emf5",
+        "freezing",
+        "orbs"
+      ],
+      "huntSanity": 50,
+      "sanityNote": "",
+      "speedMin": 1.7,
+      "speedMax": 1.7,
+      "tips": "ハント時にロウソクや懐中電灯などの灯火を消して回る。"
+    },
+    {
+      "id": "oni",
+      "ja": "鬼",
+      "en": "Oni",
+      "evidence": [
+        "emf5",
+        "spiritbox",
+        "uv"
+      ],
+      "huntSanity": 50,
+      "sanityNote": "",
+      "speedMin": 1.7,
+      "speedMax": 1.7,
+      "tips": "調査中の物音・イベントが多く、活動的に感じられる。"
+    },
+    {
+      "id": "yokai",
+      "ja": "妖怪",
+      "en": "Yokai",
+      "evidence": [
+        "spiritbox",
+        "orbs",
+        "uv"
+      ],
+      "huntSanity": 50,
+      "sanityNote": "",
+      "speedMin": 1.7,
+      "speedMax": 1.7,
+      "tips": "ハント中は近くで喋らないと反応しない＝声で早期にハントを誘発しやすい。"
+    },
+    {
+      "id": "hantu",
+      "ja": "ハントゥ",
+      "en": "Hantu",
+      "evidence": [
+        "freezing",
+        "uv",
+        "dots"
+      ],
+      "huntSanity": 50,
+      "sanityNote": "",
+      "speedMin": 1.44,
+      "speedMax": 2.7,
+      "tips": "温度依存で速度が変化（暖かい部屋で遅く、氷点下の部屋で最速2.7m/s）。LoS加速はしない。ブレーカーを頻繁に落とす。"
+    },
+    {
+      "id": "goryo",
+      "ja": "御霊",
+      "en": "Goryo",
+      "evidence": [
+        "uv",
+        "dots",
+        "orbs"
+      ],
+      "huntSanity": 50,
+      "sanityNote": "",
+      "speedMin": 1.7,
+      "speedMax": 1.7,
+      "tips": "近くに他プレイヤーがいるとD.O.T.S.に映りにくい＝1人で調査すると証拠が取りやすい。"
+    },
+    {
+      "id": "myling",
+      "ja": "マイリング",
+      "en": "Myling",
+      "evidence": [
+        "emf5",
+        "writing",
+        "uv"
+      ],
+      "huntSanity": 50,
+      "sanityNote": "",
+      "speedMin": 1.7,
+      "speedMax": 1.7,
+      "tips": "ハント外の心霊音（うめき声など）が通常より静か・聞こえにくい。"
+    },
+    {
+      "id": "onryo",
+      "ja": "怨霊",
+      "en": "Onryo",
+      "evidence": [
+        "spiritbox",
+        "freezing",
+        "orbs"
+      ],
+      "huntSanity": 50,
+      "sanityNote": "近くの火（ロウソク・ライター）を3つ消すと即ハントする特殊挙動あり",
+      "speedMin": 1.7,
+      "speedMax": 1.7,
+      "tips": "火を吹き消すのが好き。短時間に3つ消すと正気度に関係なく即ハントする。"
+    },
+    {
+      "id": "twins",
+      "ja": "ツインズ",
+      "en": "The Twins",
+      "evidence": [
+        "emf5",
+        "spiritbox",
+        "writing"
+      ],
+      "huntSanity": 50,
+      "sanityNote": "",
+      "speedMin": 1.5,
+      "speedMax": 1.9,
+      "tips": "ハントごとに実際に動く方（1.5m/s）とダミー（1.9m/s）がランダムに切り替わる。"
+    },
+    {
+      "id": "raiju",
+      "ja": "雷獣",
+      "en": "Raiju",
+      "evidence": [
+        "emf5",
+        "spiritbox",
+        "dots"
+      ],
+      "huntSanity": 50,
+      "sanityNote": "稼働中の電子機器付近では65%目安まで早期ハント",
+      "speedMin": 1.7,
+      "speedMax": 2.5,
+      "tips": "稼働している電子機器の近くで2.5m/sまで加速し、ハント閾値も上がる。機器の電源を切ると通常に戻る。"
+    },
+    {
+      "id": "obake",
+      "ja": "化け狐",
+      "en": "Obake",
+      "evidence": [
+        "emf5",
+        "uv",
+        "orbs"
+      ],
+      "huntSanity": 50,
+      "sanityNote": "",
+      "speedMin": 1.7,
+      "speedMax": 1.7,
+      "tips": "低確率で6本指の指紋が残ることがある。"
+    },
+    {
+      "id": "mimic",
+      "ja": "ミミック",
+      "en": "The Mimic",
+      "evidence": [
+        "spiritbox",
+        "freezing",
+        "dots"
+      ],
+      "huntSanity": 50,
+      "sanityNote": "模倣中のゴーストの挙動に依存",
+      "speedMin": 0.4,
+      "speedMax": 3.7,
+      "tips": "証拠には出ないはずのゴーストオーブが常に見える点が最大の識別ポイント。他の証拠・速度・ハント挙動は模倣中のゴーストに準じる。"
+    },
+    {
+      "id": "moroi",
+      "ja": "モーロイ",
+      "en": "Moroi",
+      "evidence": [
+        "spiritbox",
+        "uv",
+        "writing"
+      ],
+      "huntSanity": 50,
+      "sanityNote": "",
+      "speedMin": 1.5,
+      "speedMax": 3.71,
+      "tips": "正気度が下がるほど速くなり、正気度0%付近＋LoS持続で最速3.71m/s（ゲーム最速クラス）。"
+    },
+    {
+      "id": "deogen",
+      "ja": "デオヘン",
+      "en": "Deogen",
+      "evidence": [
+        "spiritbox",
+        "writing",
+        "dots"
+      ],
+      "huntSanity": 40,
+      "sanityNote": "",
+      "speedMin": 0.4,
+      "speedMax": 3.0,
+      "tips": "常にプレイヤーの位置を把握しており、隠れても無意味。遠いと3.0m/sで速いが、2.5m以内に近づくと0.4m/sまで急減速する。"
+    },
+    {
+      "id": "thaye",
+      "ja": "セーイ",
+      "en": "Thaye",
+      "evidence": [
+        "emf5",
+        "writing",
+        "orbs"
+      ],
+      "huntSanity": 50,
+      "sanityNote": "調査開始直後がもっとも活発・攻撃的",
+      "speedMin": 1.0,
+      "speedMax": 2.75,
+      "tips": "時間経過（歳を取る）とともに減速していく。開始直後は2.75m/sと速いが、粘るほど1.0m/sまで衰える。"
+    },
+    {
+      "id": "dayan",
+      "ja": "ダヤン",
+      "en": "Dayan",
+      "evidence": [
+        "emf5",
+        "orbs",
+        "spiritbox"
+      ],
+      "huntSanity": 50,
+      "sanityNote": "",
+      "speedMin": 1.2,
+      "speedMax": 2.25,
+      "tips": "10m以内でプレイヤーが動いていると2.25m/sに加速し、静止していると1.2m/sまで減速する。止まって様子を見るのが有効。"
+    },
+    {
+      "id": "gallu",
+      "ja": "ガルル",
+      "en": "Gallu",
+      "evidence": [
+        "emf5",
+        "uv",
+        "spiritbox"
+      ],
+      "huntSanity": 50,
+      "sanityNote": "通常50%／塩・線香・十字架で「激昂」時60%／その後の「疲弊」時40%",
+      "speedMin": 1.36,
+      "speedMax": 1.96,
+      "tips": "通常(1.7m/s)・激昂(1.96m/s、ハント短め)・疲弊(1.36m/s)の3状態を巡回。防御アイテムを早めに使うと一時的に強化されるので注意。"
+    },
+    {
+      "id": "obambo",
+      "ja": "オバンボ",
+      "en": "Obambo",
+      "evidence": [
+        "writing",
+        "uv",
+        "dots"
+      ],
+      "huntSanity": 50,
+      "sanityNote": "「穏やか」「攻撃的」が2分周期で切り替わり、ハント中でも変化しうる",
+      "speedMin": 1.7,
+      "speedMax": 2.4,
+      "tips": "2分周期で穏やか状態と攻撃的状態を行き来する。ハントの最中に急に速くなることがある。"
+    },
+    {
+      "id": "aswang",
+      "ja": "アスワング",
+      "en": "Aswang",
+      "evidence": [
+        "freezing",
+        "writing",
+        "dots"
+      ],
+      "huntSanity": 50,
+      "sanityNote": "",
+      "speedMin": 1.7,
+      "speedMax": 2.8,
+      "tips": "レヴナントに似て発見した瞬間に急加速するが最高速はやや控えめ。公式な隠れ場所に逃げ込むと即座にハントが終了する。"
+    },
+    {
+      "id": "kormos",
+      "ja": "コルモス",
+      "en": "Kormos",
+      "evidence": [
+        "orbs",
+        "spiritbox",
+        "uv"
+      ],
+      "huntSanity": 50,
+      "sanityNote": "同室でプレイヤーが走ると70%目安まで早期ハント",
+      "speedMin": 1.7,
+      "speedMax": 2.21,
+      "tips": "目が見えない設定で、音（特に走る音）に反応する。静止していると気づかれにくい。"
+    },
+    {
+      "id": "deildegast",
+      "ja": "デイルデガスト",
+      "en": "Deildegast",
+      "evidence": [
+        "emf5",
+        "writing",
+        "dots"
+      ],
+      "huntSanity": 50,
+      "sanityNote": "",
+      "speedMin": 0.4,
+      "speedMax": 3.0,
+      "tips": "調査開始直後は3.0m/sと最速だが、プレイヤーが物に触れる／投げるたびに0.1m/sずつ減速していく。"
+    }
+  ]
+};
